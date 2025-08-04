@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ElegantPrice - Enhanced House Price Prediction Web Application
+HOUSELYTICS - House Price Prediction Web Application
 A sophisticated web interface with silent colors and advanced visualizations
 """
 
@@ -26,7 +26,7 @@ sns.set_style("whitegrid")
 plt.style.use('seaborn-v0_8')
 
 app = Flask(__name__)
-app.secret_key = 'elegantprice_secret_key_2024'
+app.secret_key = 'houselytics_secret_key_2024'
 
 # Global variables for model
 model = None
@@ -515,7 +515,7 @@ def data_insights():
 
 if __name__ == '__main__':
     # Train model on startup
-    print("🏠 Training ElegantPrice model...")
+    print("🏠 Training HOUSELYTICS model...")
     train_model()
     print(f"✅ Model trained successfully!")
     print(f"📊 R² Score: {r2_score_value:.4f}")

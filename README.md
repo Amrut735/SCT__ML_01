@@ -39,8 +39,8 @@ A sophisticated machine learning web application for predicting house prices wit
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/houselytics.git
-   cd houselytics
+   git clone https://github.com/Amrut735/SCT_ML_1.git
+   cd SCT_ML_1
    ```
 
 2. **Install dependencies**
@@ -143,7 +143,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📧 Contact
 
 - **Email**: info@houselytics.in
-- **Project Link**: https://github.com/yourusername/houselytics
+- **Project Link**: https://github.com/Amrut735/SCT_ML_1
 
 ## 🙏 Acknowledgments
 

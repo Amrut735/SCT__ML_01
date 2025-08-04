@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-SmartPrice - House Price Prediction Web Application
+HOUSELYTICS - House Price Prediction Web Application
 A modern web interface for predicting house prices in Indian Rupees (INR)
 """
 
@@ -21,7 +21,7 @@ from datetime import datetime
 import os
 
 app = Flask(__name__)
-app.secret_key = 'smartprice_secret_key_2024'
+app.secret_key = 'houselytics_secret_key_2024'
 
 # Global variables for model
 model = None
@@ -256,7 +256,7 @@ def clear_history():
 
 if __name__ == '__main__':
     # Train model on startup
-    print("🏠 Training SmartPrice model...")
+    print("🏠 Training HOUSELYTICS model...")
     train_model()
     print(f"✅ Model trained successfully!")
     print(f"📊 R² Score: {r2_score_value:.4f}")

@@ -1,4 +1,4 @@
-# 🏠 SmartPrice - House Price Prediction Web Application
+# 🏠 HOUSELYTICS - House Price Prediction Web Application
 
 A modern, responsive web application for predicting house prices in Indian Rupees (INR) with a beautiful user interface and real-time predictions.
 
@@ -40,7 +40,7 @@ Open your browser and go to: `http://localhost:5000`
 ## 📱 User Interface
 
 ### **Header Section**
-- SmartPrice logo with house icon
+- HOUSELYTICS logo with house icon
 - Navigation menu (Home, About)
 - Professional dark blue header
 
@@ -215,7 +215,7 @@ The application is fully responsive and works on:
 
 ## 🌟 Ready for Production
 
-The SmartPrice web application is production-ready with:
+The HOUSELYTICS web application is production-ready with:
 - ✅ Modern, responsive UI
 - ✅ Real-time predictions
 - ✅ Professional design
@@ -224,4 +224,4 @@ The SmartPrice web application is production-ready with:
 - ✅ Indian market focus
 - ✅ Visualization capabilities
 
-Visit `http://localhost:5000` to experience the SmartPrice web application! 🏠🇮🇳 
+Visit `http://localhost:5000` to experience the HOUSELYTICS web application! 🏠🇮🇳 

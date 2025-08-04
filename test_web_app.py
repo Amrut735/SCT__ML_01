@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test script for SmartPrice web application
+Test script for HOUSELYTICS web application
 Tests all major functionalities and endpoints
 """
 
@@ -9,10 +9,10 @@ import json
 import time
 
 def test_web_app():
-    """Test the SmartPrice web application."""
+    """Test the HOUSELYTICS web application."""
     base_url = "http://localhost:5000"
     
-    print("🏠 Testing SmartPrice Web Application")
+    print("🏠 Testing HOUSELYTICS Web Application")
     print("=" * 50)
     
     # Test 1: Check if server is running
@@ -151,7 +151,7 @@ def test_web_app():
 
 def main():
     """Main function to run tests."""
-    print("🚀 Starting SmartPrice Web Application Tests...")
+    print("🚀 Starting HOUSELYTICS Web Application Tests...")
     print("💡 Make sure the Flask app is running with: python app.py")
     print()
     

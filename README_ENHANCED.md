@@ -1,4 +1,4 @@
-# ElegantPrice - Enhanced House Price Prediction Web Application
+# HOUSELYTICS - Enhanced House Price Prediction Web Application
 
 A sophisticated web application for predicting house prices with elegant design, advanced visualizations, and comprehensive analytics.
 
@@ -241,4 +241,4 @@ For issues or questions:
 
 ---
 
-**ElegantPrice** - Where sophistication meets simplicity in house price prediction. 
+**HOUSELYTICS** - Where sophistication meets simplicity in house price prediction. 
