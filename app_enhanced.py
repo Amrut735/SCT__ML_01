@@ -36,45 +36,102 @@ rmse_value = None
 mae_value = None
 training_data = None
 
+# Train model when app is created (for production deployment)
+print("🏠 Training HOUSELYTICS model...")
+try:
+    train_model()
+    print(f"✅ Model trained successfully!")
+    print(f"📊 R² Score: {r2_score_value:.4f}")
+    print(f"📈 RMSE: ₹{rmse_value:,.2f}")
+    print(f"📉 MAE: ₹{mae_value:,.2f}")
+except Exception as e:
+    print(f"❌ Error training model: {e}")
+
 def train_model():
     """Train the house price prediction model."""
     global model, scaler, r2_score_value, rmse_value, mae_value, training_data
     
-    # Load and preprocess data
-    df = pd.read_csv('house_data.csv')
-    
-    # Convert USD to INR (1 USD ≈ 83 INR)
-    df['price'] = df['price'] * 83
-    
-    # Drop missing values
-    df = df.dropna()
-    
-    # Store training data for visualizations
-    training_data = df.copy()
-    
-    # Prepare features and target
-    X = df[['square_footage', 'bedrooms', 'bathrooms']].values
-    y = df['price'].values
-    
-    # Split data
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    
-    # Normalize features
-    scaler = MinMaxScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
-    
-    # Train model
-    model = LinearRegression()
-    model.fit(X_train_scaled, y_train)
-    
-    # Evaluate model
-    y_pred = model.predict(X_test_scaled)
-    r2_score_value = model.score(X_test_scaled, y_test)
-    rmse_value = np.sqrt(mean_squared_error(y_test, y_pred))
-    mae_value = mean_absolute_error(y_test, y_pred)
-    
-    return model, scaler, r2_score_value, rmse_value, mae_value
+    try:
+        # Load and preprocess data
+        df = pd.read_csv('house_data.csv')
+        print(f"✅ Loaded {len(df)} records from house_data.csv")
+        
+        # Convert USD to INR (1 USD ≈ 83 INR)
+        df['price'] = df['price'] * 83
+        
+        # Drop missing values
+        df = df.dropna()
+        print(f"✅ After cleaning: {len(df)} records")
+        
+        # Store training data for visualizations
+        training_data = df.copy()
+        
+        # Prepare features and target
+        X = df[['square_footage', 'bedrooms', 'bathrooms']].values
+        y = df['price'].values
+        
+        # Split data
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        
+        # Normalize features
+        scaler = MinMaxScaler()
+        X_train_scaled = scaler.fit_transform(X_train)
+        X_test_scaled = scaler.transform(X_test)
+        
+        # Train model
+        model = LinearRegression()
+        model.fit(X_train_scaled, y_train)
+        
+        # Evaluate model
+        y_pred = model.predict(X_test_scaled)
+        r2_score_value = model.score(X_test_scaled, y_test)
+        rmse_value = np.sqrt(mean_squared_error(y_test, y_pred))
+        mae_value = mean_absolute_error(y_test, y_pred)
+        
+        print(f"✅ Model training completed successfully")
+        return model, scaler, r2_score_value, rmse_value, mae_value
+        
+    except FileNotFoundError:
+        print("❌ house_data.csv not found. Creating synthetic data...")
+        # Create synthetic data as fallback
+        np.random.seed(42)
+        n_samples = 1000
+        square_footage = np.random.uniform(800, 5000, n_samples)
+        bedrooms = np.random.randint(1, 6, n_samples)
+        bathrooms = np.random.uniform(1, 4, n_samples)
+        price = square_footage * 5000 + bedrooms * 1000000 + bathrooms * 500000 + np.random.normal(0, 200000, n_samples)
+        
+        df = pd.DataFrame({
+            'square_footage': square_footage,
+            'bedrooms': bedrooms,
+            'bathrooms': bathrooms,
+            'price': price
+        })
+        
+        training_data = df.copy()
+        X = df[['square_footage', 'bedrooms', 'bathrooms']].values
+        y = df['price'].values
+        
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        
+        scaler = MinMaxScaler()
+        X_train_scaled = scaler.fit_transform(X_train)
+        X_test_scaled = scaler.transform(X_test)
+        
+        model = LinearRegression()
+        model.fit(X_train_scaled, y_train)
+        
+        y_pred = model.predict(X_test_scaled)
+        r2_score_value = model.score(X_test_scaled, y_test)
+        rmse_value = np.sqrt(mean_squared_error(y_test, y_pred))
+        mae_value = mean_absolute_error(y_test, y_pred)
+        
+        print(f"✅ Synthetic model training completed successfully")
+        return model, scaler, r2_score_value, rmse_value, mae_value
+        
+    except Exception as e:
+        print(f"❌ Error in train_model: {e}")
+        raise e
 
 def predict_price(square_footage, bedrooms, bathrooms):
     """Predict house price in INR."""
@@ -450,13 +507,33 @@ def clear_history():
 @app.route('/model_stats')
 def model_stats():
     """Get model statistics."""
-    return jsonify({
-        'success': True,
-        'r2_score': r2_score_value,
-        'rmse': rmse_value,
-        'mae': mae_value,
-        'training_samples': len(training_data) if training_data is not None else 0
-    })
+    try:
+        if r2_score_value is None or rmse_value is None or mae_value is None:
+            return jsonify({
+                'success': False,
+                'error': 'Model not trained. Please check server logs.',
+                'r2_score': None,
+                'rmse': None,
+                'mae': None,
+                'training_samples': len(training_data) if training_data is not None else 0
+            })
+        
+        return jsonify({
+            'success': True,
+            'r2_score': r2_score_value,
+            'rmse': rmse_value,
+            'mae': mae_value,
+            'training_samples': len(training_data) if training_data is not None else 0
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': f'Error getting model stats: {str(e)}',
+            'r2_score': None,
+            'rmse': None,
+            'mae': None,
+            'training_samples': 0
+        })
 
 @app.route('/data_insights')
 def data_insights():
