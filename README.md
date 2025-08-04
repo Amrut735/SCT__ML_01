@@ -2,6 +2,12 @@
 
 A sophisticated machine learning web application for predicting house prices with advanced analytics and visualizations.
 
+## 🌐 Live Application
+
+**🚀 Deployed and Live**: [https://sct-ml-01.onrender.com](https://sct-ml-01.onrender.com)
+
+*Experience HOUSELYTICS in action with real-time predictions and analytics!*
+
 ## 🌟 Features
 
 - **Instant Price Prediction**: Get house price predictions instantly based on square footage, bedrooms, and bathrooms
@@ -12,12 +18,14 @@ A sophisticated machine learning web application for predicting house prices wit
 - **Prediction History**: Track all your previous predictions
 - **Responsive Design**: Modern, elegant UI that works on all devices
 - **Silent Color Scheme**: Professional gray-toned interface
+- **Production Ready**: Optimized for cloud deployment with error handling
 
 ## 📊 Visualizations Available
 
 - **Actual vs Predicted Plot**: Scatter plot with perfect prediction line and residuals
 - **Feature Importance**: Horizontal bar chart showing feature coefficients
 - **Price Distribution**: Histogram of prices and square footage vs price scatter plot
+- **Advanced Analytics**: Multi-panel dashboard with correlation matrices and box plots
 
 ## 🛠️ Technology Stack
 
@@ -27,15 +35,21 @@ A sophisticated machine learning web application for predicting house prices wit
 - **Visualizations**: Matplotlib, Seaborn
 - **Frontend**: HTML5, CSS3, JavaScript
 - **Styling**: Custom CSS with gradient backgrounds
+- **Deployment**: Render (Cloud Platform)
+- **Production Server**: Gunicorn
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### Option 1: Use Live Application
+Visit **[https://sct-ml-01.onrender.com](https://sct-ml-01.onrender.com)** to use the application immediately!
 
+### Option 2: Local Development
+
+#### Prerequisites
 - Python 3.7 or higher
 - pip (Python package installer)
 
-### Installation
+#### Installation
 
 1. **Clone the repository**
    ```bash
@@ -83,20 +97,29 @@ A sophisticated machine learning web application for predicting house prices wit
 - **R² Score**: 0.8054 (80.54% accuracy)
 - **RMSE**: ₹4,229,702.15
 - **MAE**: ₹3,394,627.00
-- **Training Samples**: 1000+ properties
+- **Training Samples**: 889 properties (cleaned from 1000+)
+- **Model Type**: Linear Regression with MinMaxScaler normalization
 
 ## 🏗️ Project Structure
 
 ```
 houselytics/
-├── app_enhanced.py              # Main Flask application
+├── app_enhanced.py              # Main Flask application (production-ready)
+├── app.py                       # Basic Flask application
+├── app_production.py            # Production configuration
+├── demo.py                      # Comprehensive demonstration script
+├── house_price_predictor.py     # Core ML model implementation
 ├── requirements.txt             # Python dependencies
+├── render.yaml                  # Render deployment configuration
+├── gunicorn.conf.py            # Production server configuration
 ├── house_data.csv              # Training dataset
 ├── templates/                  # HTML templates
 │   ├── index_enhanced.html     # Main page
 │   ├── about.html              # About page
 │   └── analytics.html          # Analytics page
 ├── README.md                   # This file
+├── DEPLOYMENT_GUIDE.md         # Deployment instructions
+├── PROJECT_SUMMARY.md          # Project overview
 └── .gitignore                  # Git ignore rules
 ```
 
@@ -110,6 +133,7 @@ houselytics/
 - `GET /about` - About page
 - `GET /analytics` - Analytics page
 - `GET /refresh` - Clear prediction history
+- `GET /get_history` - Retrieve prediction history
 
 ## 🎨 Design Philosophy
 
@@ -127,6 +151,20 @@ HOUSELYTICS features a sophisticated "silent" color scheme with:
 - Optimized model loading
 - Efficient data processing
 - Secure API endpoints
+- Production-ready error handling
+- Automatic model training on startup
+
+## 🚀 Recent Updates
+
+### ✅ Bug Fixes
+- **Fixed startup error**: Resolved `train_model` function definition order issue
+- **Improved error handling**: Enhanced exception handling for production deployment
+- **Optimized deployment**: Streamlined Render deployment configuration
+
+### 🆕 New Features
+- **Live deployment**: Application now available at [https://sct-ml-01.onrender.com](https://sct-ml-01.onrender.com)
+- **Enhanced reliability**: Better error recovery and model training
+- **Production optimization**: Gunicorn server configuration for cloud deployment
 
 ## 🤝 Contributing
 
@@ -144,6 +182,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Email**: info@houselytics.in
 - **Project Link**: https://github.com/Amrut735/SCT_ML_1
+- **Live Application**: [https://sct-ml-01.onrender.com](https://sct-ml-01.onrender.com)
 
 ## 🙏 Acknowledgments
 
@@ -151,7 +190,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Data visualization powered by Matplotlib and Seaborn
 - Modern UI design with CSS3 and JavaScript
 - House price dataset for training and testing
+- Deployed on Render cloud platform
 
 ---
 
-**HOUSELYTICS** - Making house price prediction elegant and insightful! 🏠✨ 
+**HOUSELYTICS** - Making house price prediction elegant and insightful! 🏠✨
+
+*Try it now at [https://sct-ml-01.onrender.com](https://sct-ml-01.onrender.com)* 
