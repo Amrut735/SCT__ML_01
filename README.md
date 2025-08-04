@@ -17,7 +17,6 @@ A sophisticated machine learning web application for predicting house prices wit
 - **Comprehensive Analytics**: Detailed data insights and statistical analysis
 - **Prediction History**: Track all your previous predictions
 - **Responsive Design**: Modern, elegant UI that works on all devices
-- **Silent Color Scheme**: Professional gray-toned interface
 - **Production Ready**: Optimized for cloud deployment with error handling
 
 ## 📊 Visualizations Available
@@ -25,7 +24,6 @@ A sophisticated machine learning web application for predicting house prices wit
 - **Actual vs Predicted Plot**: Scatter plot with perfect prediction line and residuals
 - **Feature Importance**: Horizontal bar chart showing feature coefficients
 - **Price Distribution**: Histogram of prices and square footage vs price scatter plot
-- **Advanced Analytics**: Multi-panel dashboard with correlation matrices and box plots
 
 ## 🛠️ Technology Stack
 
@@ -53,8 +51,8 @@ Visit **[https://sct-ml-01.onrender.com](https://sct-ml-01.onrender.com)** to us
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Amrut735/SCT_ML_1.git
-   cd SCT_ML_1
+   git clone https://github.com/Amrut735/SCT_ML_01.git
+   cd SCT_ML_01
    ```
 
 2. **Install dependencies**
@@ -181,7 +179,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📧 Contact
 
 - **Email**: info@houselytics.in
-- **Project Link**: https://github.com/Amrut735/SCT_ML_1
+- **Project Link**: https://github.com/Amrut735/SCT_ML_01
 - **Live Application**: [https://sct-ml-01.onrender.com](https://sct-ml-01.onrender.com)
 
 ## 🙏 Acknowledgments
