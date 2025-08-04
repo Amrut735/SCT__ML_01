@@ -190,6 +190,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - House price dataset for training and testing
 - Deployed on Render cloud platform
 
+🤝 Contributing
+Feel free to fork this project and submit pull requests for improvements!
+
 ---
 
 **HOUSELYTICS** - Making house price prediction elegant and insightful! 🏠✨
