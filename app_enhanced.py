@@ -522,5 +522,9 @@ if __name__ == '__main__':
     print(f"📈 RMSE: ₹{rmse_value:,.2f}")
     print(f"📉 MAE: ₹{mae_value:,.2f}")
     
+    # Get port from environment variable (for Render) or use default
+    import os
+    port = int(os.environ.get('PORT', 5001))
+    
     # Run the app
-    app.run(debug=True, host='0.0.0.0', port=5001) 
+    app.run(debug=False, host='0.0.0.0', port=port) 
