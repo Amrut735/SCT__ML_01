@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - HOUSELYTICS</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            min-height: 100vh;
+            color: #1F2937;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: #1F2937;
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #F9FAFB;
+        }
+
+        .logo i {
+            color: #6B7280;
+            font-size: 2rem;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            color: #D1D5DB;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav a:hover {
+            color: #9CA3AF;
+        }
+
+        .nav a.active {
+            color: #6B7280;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .hero-section {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #6B7280;
+            margin-bottom: 2rem;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: #374151;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-title i {
+            color: #6B7280;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list i {
+            color: #059669;
+            font-size: 1.1rem;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .tech-item {
+            background: #F9FAFB;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #E5E7EB;
+        }
+
+        .tech-item i {
+            font-size: 2rem;
+            color: #6B7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-item h4 {
+            color: #374151;
+            font-weight: 600;
+        }
+
+        .tech-item p {
+            color: #6B7280;
+            font-size: 0.9rem;
+        }
+
+        .stats-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: #F9FAFB;
+            border-radius: 12px;
+            border-left: 4px solid #6B7280;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: #6B7280;
+            font-weight: 500;
+        }
+
+        .team-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 2rem;
+            background: #F9FAFB;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #6B7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .member-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .member-role {
+            color: #6B7280;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .member-bio {
+            color: #374151;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .contact-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: #F9FAFB;
+            border-radius: 8px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .contact-item i {
+            font-size: 1.5rem;
+            color: #6B7280;
+        }
+
+        .contact-info h4 {
+            color: #111827;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-info p {
+            color: #6B7280;
+        }
+
+        .footer {
+            background: #1F2937;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .back-btn {
+            background: #6B7280;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .back-btn:hover {
+            background: #4B5563;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-home"></i>
+            HOUSELYTICS
+        </div>
+        <nav class="nav">
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            <a href="/analytics"><i class="fas fa-chart-line"></i> Analytics</a>
+            <a href="/about" class="active"><i class="fas fa-info-circle"></i> About</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="hero-section">
+            <h1 class="hero-title">About HOUSELYTICS</h1>
+            <p class="hero-subtitle">Revolutionizing House Price Prediction with AI</p>
+            <p class="hero-description">
+                HOUSELYTICS is a sophisticated machine learning application that leverages advanced algorithms 
+                to provide accurate house price predictions. Our platform combines cutting-edge technology 
+                with an elegant, user-friendly interface to deliver reliable real estate insights.
+            </p>
+        </div>
+
+        <div class="content-grid">
+            <div class="content-card">
+                <h2 class="card-title">
+                    <i class="fas fa-lightbulb"></i>
+                    Our Mission
+                </h2>
+                <p style="color: #374151; line-height: 1.8; margin-bottom: 1rem;">
+                    To democratize access to accurate real estate pricing by providing transparent, 
+                    data-driven insights that empower buyers, sellers, and investors to make informed decisions.
+                </p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Accurate price predictions using ML</li>
+                    <li><i class="fas fa-check"></i> Transparent methodology</li>
+                    <li><i class="fas fa-check"></i> User-friendly interface</li>
+                    <li><i class="fas fa-check"></i> Real-time analytics</li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h2 class="card-title">
+                    <i class="fas fa-cogs"></i>
+                    Technology Stack
+                </h2>
+                <div class="tech-stack">
+                    <div class="tech-item">
+                        <i class="fab fa-python"></i>
+                        <h4>Python</h4>
+                        <p>Core ML & Backend</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-brain"></i>
+                        <h4>Scikit-learn</h4>
+                        <p>Machine Learning</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-chart-bar"></i>
+                        <h4>Matplotlib</h4>
+                        <p>Data Visualization</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-server"></i>
+                        <h4>Flask</h4>
+                        <p>Web Framework</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <h2 class="card-title">
+                <i class="fas fa-chart-line"></i>
+                Model Performance
+            </h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="r2Score">--</div>
+                    <div class="stat-label">R² Score</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="rmseValue">--</div>
+                    <div class="stat-label">RMSE</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="maeValue">--</div>
+                    <div class="stat-label">MAE</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="trainingSamples">--</div>
+                    <div class="stat-label">Training Samples</div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="contact-section">
+            <h2 class="card-title">
+                <i class="fas fa-envelope"></i>
+                Get in Touch
+            </h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div class="contact-info">
+                        <h4>Email</h4>
+                        <p>info@houselytics.in</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="/" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Home
+            </a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 HOUSELYTICS. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Load model statistics
+        window.addEventListener('load', function() {
+            fetch('/model_stats')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('r2Score').textContent = (data.r2_score * 100).toFixed(1) + '%';
+                    document.getElementById('rmseValue').textContent = '₹' + data.rmse.toLocaleString('en-IN', {maximumFractionDigits: 0});
+                    document.getElementById('maeValue').textContent = '₹' + data.mae.toLocaleString('en-IN', {maximumFractionDigits: 0});
+                    document.getElementById('trainingSamples').textContent = data.training_samples.toLocaleString();
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

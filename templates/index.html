@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartPrice - House Price Prediction</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo i {
+            color: #3498db;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #3498db;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 600px;
+        }
+
+        .input-section {
+            padding: 2rem;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+        }
+
+        .history-section {
+            padding: 2rem;
+            background: white;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .input-field {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-field i {
+            position: absolute;
+            left: 12px;
+            color: #6c757d;
+            z-index: 1;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .input-field input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .predict-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .predict-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .predict-btn:active {
+            transform: translateY(0);
+        }
+
+        .result-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .predicted-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #27ae60;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .error-info {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+
+        .history-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            background: #e8f5e8;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .history-item .details {
+            font-size: 0.9rem;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-item .price {
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .history-item .timestamp {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+
+        .clear-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .clear-btn:hover {
+            background: #c82333;
+        }
+
+        .visualization-section {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .viz-btn {
+            background: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .viz-btn:hover {
+            background: #5a4fcf;
+        }
+
+        .plot-container {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .plot-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .main-card {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-section {
+                border-right: none;
+                border-bottom: 1px solid #e9ecef;
+            }
+            
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-home"></i>
+            SmartPrice
+        </div>
+        <nav class="nav">
+            <a href="#"><i class="fas fa-home"></i> Home</a>
+            <a href="#"><i class="fas fa-info-circle"></i> About</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="main-card">
+            <div class="input-section">
+                <h2 class="section-title">
+                    <i class="fas fa-edit"></i>
+                    Enter Property Details
+                </h2>
+                
+                <form id="predictionForm">
+                    <div class="input-group">
+                        <label for="square_footage">Square Footage</label>
+                        <div class="input-field">
+                            <i class="fas fa-ruler-combined"></i>
+                            <input type="number" id="square_footage" name="square_footage" placeholder="Enter square footage" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="bedrooms">Bedrooms</label>
+                        <div class="input-field">
+                            <i class="fas fa-bed"></i>
+                            <input type="number" id="bedrooms" name="bedrooms" placeholder="Enter number of bedrooms" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="bathrooms">Bathrooms</label>
+                        <div class="input-field">
+                            <i class="fas fa-bath"></i>
+                            <input type="number" id="bathrooms" name="bathrooms" placeholder="Enter number of bathrooms" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="predict-btn">
+                        <i class="fas fa-lightbulb"></i>
+                        Predict Price
+                    </button>
+                </form>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing property details...</p>
+                </div>
+                
+                <div class="result-section" id="resultSection">
+                    <div class="predicted-price" id="predictedPrice"></div>
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value" id="r2Score"></div>
+                            <div class="metric-label">R² Score</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="rmseValue"></div>
+                            <div class="metric-label">RMSE</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="error-info" id="errorInfo"></div>
+            </div>
+            
+            <div class="history-section">
+                <h2 class="section-title">
+                    <i class="fas fa-clock"></i>
+                    Prediction History
+                </h2>
+                
+                <div class="history-list" id="historyList">
+                    <p style="color: #6c757d; text-align: center; margin-top: 2rem;">
+                        No predictions yet. Enter property details to get started!
+                    </p>
+                </div>
+                
+                <button class="clear-btn" onclick="clearHistory()">
+                    <i class="fas fa-trash"></i>
+                    Clear History
+                </button>
+            </div>
+        </div>
+        
+        <div class="visualization-section">
+            <h2 class="section-title">
+                <i class="fas fa-chart-line"></i>
+                Model Performance Visualization
+            </h2>
+            
+            <button class="viz-btn" onclick="generateVisualization()">
+                <i class="fas fa-chart-bar"></i>
+                Generate Visualization
+            </button>
+            
+            <div class="plot-container" id="plotContainer"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <h3>Get in Touch</h3>
+        <div class="contact-info">
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <span>Phone: +91 9876543210</span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <span>Email: info@smartprice.in</span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Address: Bangalore, India</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Form submission
+        document.getElementById('predictionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultSection').classList.remove('show');
+            document.getElementById('errorInfo').style.display = 'none';
+            
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                
+                if (data.success) {
+                    // Show result
+                    document.getElementById('predictedPrice').textContent = data.formatted_price;
+                    document.getElementById('r2Score').textContent = (data.r2_score * 100).toFixed(1) + '%';
+                    document.getElementById('rmseValue').textContent = '₹' + data.rmse.toLocaleString('en-IN', {maximumFractionDigits: 0});
+                    
+                    document.getElementById('resultSection').classList.add('show');
+                    
+                    // Update history
+                    updateHistory(data.prediction_history);
+                } else {
+                    // Show error
+                    document.getElementById('errorInfo').textContent = data.error;
+                    document.getElementById('errorInfo').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('errorInfo').textContent = 'An error occurred. Please try again.';
+                document.getElementById('errorInfo').style.display = 'block';
+            });
+        });
+        
+        // Update history display
+        function updateHistory(history) {
+            const historyList = document.getElementById('historyList');
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<p style="color: #6c757d; text-align: center; margin-top: 2rem;">No predictions yet. Enter property details to get started!</p>';
+                return;
+            }
+            
+            historyList.innerHTML = history.map(item => `
+                <div class="history-item">
+                    <div class="details">${item.square_footage} sq ft | ${item.bedrooms} BR | ${item.bathrooms} Bath</div>
+                    <div class="price">Predicted House Price: ${item.formatted_price} (approx.)</div>
+                    <div class="timestamp">${item.timestamp}</div>
+                </div>
+            `).join('');
+        }
+        
+        // Clear history
+        function clearHistory() {
+            fetch('/clear_history')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateHistory([]);
+                }
+            });
+        }
+        
+        // Generate visualization
+        function generateVisualization() {
+            const plotContainer = document.getElementById('plotContainer');
+            plotContainer.innerHTML = '<div class="loading"><div class="spinner"></div><p>Generating visualization...</p></div>';
+            
+            fetch('/visualization')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    plotContainer.innerHTML = `<img src="data:image/png;base64,${data.plot_url}" alt="Actual vs Predicted Prices">`;
+                } else {
+                    plotContainer.innerHTML = `<p style="color: #dc3545;">Error: ${data.error}</p>`;
+                }
+            })
+            .catch(error => {
+                plotContainer.innerHTML = '<p style="color: #dc3545;">Error generating visualization</p>';
+            });
+        }
+        
+        // Load history on page load
+        window.addEventListener('load', function() {
+            fetch('/get_history')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateHistory(data.history);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

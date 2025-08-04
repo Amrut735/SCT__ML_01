@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOUSELYTICS - House Price Prediction</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            min-height: 100vh;
+            color: #1F2937;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: #1F2937;
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #F9FAFB;
+        }
+
+        .logo i {
+            color: #6B7280;
+            font-size: 2rem;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            color: #D1D5DB;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav a:hover {
+            color: #9CA3AF;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .stats-bar {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #F9FAFB;
+            border-radius: 8px;
+            border-left: 4px solid #6B7280;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6B7280;
+            font-weight: 500;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 700px;
+        }
+
+        .input-section {
+            padding: 2.5rem;
+            background: #F9FAFB;
+            border-right: 1px solid #E5E7EB;
+        }
+
+        .history-section {
+            padding: 2.5rem;
+            background: white;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title i {
+            color: #6B7280;
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.95rem;
+        }
+
+        .input-field {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-field i {
+            position: absolute;
+            left: 16px;
+            color: #9CA3AF;
+            z-index: 1;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 14px 14px 14px 48px;
+            border: 2px solid #E5E7EB;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .input-field input:focus {
+            outline: none;
+            border-color: #6B7280;
+            box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1);
+        }
+
+        .predict-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #6B7280, #4B5563);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .predict-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(107, 114, 128, 0.4);
+        }
+
+        .predict-btn:active {
+            transform: translateY(0);
+        }
+
+        .result-section {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #E5E7EB;
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .predicted-price {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #059669;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .confidence-interval {
+            background: #F0FDF4;
+            border: 1px solid #BBF7D0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .confidence-label {
+            font-size: 0.875rem;
+            color: #065F46;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .confidence-range {
+            font-size: 1rem;
+            color: #047857;
+        }
+
+        .error-info {
+            background: #FEF2F2;
+            color: #991B1B;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            border: 1px solid #FECACA;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 1rem;
+            background: #F9FAFB;
+            border-radius: 8px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1F2937;
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: #6B7280;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .history-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            background: #F9FAFB;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #6B7280;
+            transition: transform 0.2s ease;
+        }
+
+        .history-item:hover {
+            transform: translateX(4px);
+        }
+
+        .history-item .details {
+            font-size: 0.9rem;
+            color: #374151;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .history-item .price {
+            font-weight: 700;
+            color: #059669;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-item .confidence {
+            font-size: 0.8rem;
+            color: #6B7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-item .timestamp {
+            font-size: 0.8rem;
+            color: #9CA3AF;
+        }
+
+        .clear-btn {
+            background: #EF4444;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .clear-btn:hover {
+            background: #DC2626;
+        }
+
+        .visualization-section {
+            margin-top: 2rem;
+            padding: 2.5rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .viz-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .viz-btn {
+            background: #6B7280;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .viz-btn:hover {
+            background: #4B5563;
+            transform: translateY(-1px);
+        }
+
+        .viz-btn.active {
+            background: #374151;
+        }
+
+        .plot-container {
+            text-align: center;
+            margin-top: 2rem;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .plot-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            border: 4px solid #E5E7EB;
+            border-top: 4px solid #6B7280;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            background: #1F2937;
+            color: white;
+            text-align: center;
+            padding: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #D1D5DB;
+        }
+
+        .contact-item i {
+            color: #6B7280;
+        }
+
+        @media (max-width: 1024px) {
+            .main-card {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-section {
+                border-right: none;
+                border-bottom: 1px solid #E5E7EB;
+            }
+            
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .viz-controls {
+                flex-direction: column;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-home"></i>
+            HOUSELYTICS
+        </div>
+        <nav class="nav">
+            <a href="#" onclick="refreshApp()"><i class="fas fa-home"></i> Home</a>
+            <a href="/analytics"><i class="fas fa-chart-line"></i> Analytics</a>
+            <a href="/about"><i class="fas fa-info-circle"></i> About</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-item">
+                <div class="stat-value" id="r2Score">--</div>
+                <div class="stat-label">R² Score</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="rmseValue">--</div>
+                <div class="stat-label">RMSE</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="maeValue">--</div>
+                <div class="stat-label">MAE</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="trainingSamples">--</div>
+                <div class="stat-label">Training Samples</div>
+            </div>
+        </div>
+
+        <div class="main-card">
+            <div class="input-section">
+                <h2 class="section-title">
+                    <i class="fas fa-edit"></i>
+                    Property Details
+                </h2>
+                
+                <form id="predictionForm">
+                    <div class="input-group">
+                        <label for="square_footage">Square Footage</label>
+                        <div class="input-field">
+                            <i class="fas fa-ruler-combined"></i>
+                            <input type="number" id="square_footage" name="square_footage" placeholder="Enter square footage" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="bedrooms">Bedrooms</label>
+                        <div class="input-field">
+                            <i class="fas fa-bed"></i>
+                            <input type="number" id="bedrooms" name="bedrooms" placeholder="Enter number of bedrooms" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="bathrooms">Bathrooms</label>
+                        <div class="input-field">
+                            <i class="fas fa-bath"></i>
+                            <input type="number" id="bathrooms" name="bathrooms" placeholder="Enter number of bathrooms" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="predict-btn">
+                        <i class="fas fa-lightbulb"></i>
+                        Predict Price
+                    </button>
+                </form>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing property details...</p>
+                </div>
+                
+                <div class="result-section" id="resultSection">
+                    <div class="predicted-price" id="predictedPrice"></div>
+                    
+                    <div class="confidence-interval" id="confidenceInterval">
+                        <div class="confidence-label">95% Confidence Interval</div>
+                        <div class="confidence-range" id="confidenceRange"></div>
+                    </div>
+                    
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value" id="r2ScoreResult"></div>
+                            <div class="metric-label">R² Score</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="rmseValueResult"></div>
+                            <div class="metric-label">RMSE</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="maeValueResult"></div>
+                            <div class="metric-label">MAE</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="error-info" id="errorInfo"></div>
+            </div>
+            
+            <div class="history-section">
+                <h2 class="section-title">
+                    <i class="fas fa-clock"></i>
+                    Prediction History
+                </h2>
+                
+                <div class="history-list" id="historyList">
+                    <p style="color: #6B7280; text-align: center; margin-top: 2rem;">
+                        No predictions yet. Enter property details to get started!
+                    </p>
+                </div>
+                
+                <button class="clear-btn" onclick="clearHistory()">
+                    <i class="fas fa-trash"></i>
+                    Clear History
+                </button>
+            </div>
+        </div>
+        
+        <div class="visualization-section">
+            <h2 class="section-title">
+                <i class="fas fa-chart-line"></i>
+                Model Analytics
+            </h2>
+            
+            <div class="viz-controls">
+                <button class="viz-btn active" onclick="generateVisualization('actual_vs_predicted')">
+                    <i class="fas fa-chart-scatter"></i>
+                    Actual vs Predicted
+                </button>
+                <button class="viz-btn" onclick="generateVisualization('feature_importance')">
+                    <i class="fas fa-chart-bar"></i>
+                    Feature Importance
+                </button>
+                <button class="viz-btn" onclick="generateVisualization('price_distribution')">
+                    <i class="fas fa-chart-pie"></i>
+                    Price Distribution
+                </button>
+            </div>
+            
+            <div class="plot-container" id="plotContainer">
+                <p style="color: #6B7280;">Select a visualization type above to view model analytics</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <h3>Get in Touch</h3>
+        <div class="contact-info">
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <span>Email: info@houselytics.in</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Load model stats on page load
+        window.addEventListener('load', function() {
+            loadModelStats();
+            loadHistory();
+        });
+
+        // Load model statistics
+        function loadModelStats() {
+            fetch('/model_stats')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('r2Score').textContent = (data.r2_score * 100).toFixed(1) + '%';
+                    document.getElementById('rmseValue').textContent = '₹' + data.rmse.toLocaleString('en-IN', {maximumFractionDigits: 0});
+                    document.getElementById('maeValue').textContent = '₹' + data.mae.toLocaleString('en-IN', {maximumFractionDigits: 0});
+                    document.getElementById('trainingSamples').textContent = data.training_samples.toLocaleString();
+                }
+            });
+        }
+
+        // Form submission
+        document.getElementById('predictionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultSection').classList.remove('show');
+            document.getElementById('errorInfo').style.display = 'none';
+            
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                
+                if (data.success) {
+                    // Show result
+                    document.getElementById('predictedPrice').textContent = data.formatted_price;
+                    document.getElementById('confidenceRange').textContent = `${data.confidence_lower} - ${data.confidence_upper}`;
+                    document.getElementById('r2ScoreResult').textContent = (data.r2_score * 100).toFixed(1) + '%';
+                    document.getElementById('rmseValueResult').textContent = '₹' + data.rmse.toLocaleString('en-IN', {maximumFractionDigits: 0});
+                    document.getElementById('maeValueResult').textContent = '₹' + data.mae.toLocaleString('en-IN', {maximumFractionDigits: 0});
+                    
+                    document.getElementById('resultSection').classList.add('show');
+                    
+                    // Update history
+                    updateHistory(data.prediction_history);
+                } else {
+                    // Show error
+                    document.getElementById('errorInfo').textContent = data.error;
+                    document.getElementById('errorInfo').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('errorInfo').textContent = 'An error occurred. Please try again.';
+                document.getElementById('errorInfo').style.display = 'block';
+            });
+        });
+        
+        // Update history display
+        function updateHistory(history) {
+            const historyList = document.getElementById('historyList');
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<p style="color: #6B7280; text-align: center; margin-top: 2rem;">No predictions yet. Enter property details to get started!</p>';
+                return;
+            }
+            
+            historyList.innerHTML = history.map(item => `
+                <div class="history-item">
+                    <div class="details">${item.square_footage} sq ft | ${item.bedrooms} BR | ${item.bathrooms} Bath</div>
+                    <div class="price">Predicted Price: ${item.formatted_price}</div>
+                    <div class="confidence">Confidence: ${item.confidence_lower} - ${item.confidence_upper}</div>
+                    <div class="timestamp">${item.timestamp}</div>
+                </div>
+            `).join('');
+        }
+        
+        // Load history
+        function loadHistory() {
+            fetch('/get_history')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateHistory(data.history);
+                }
+            });
+        }
+        
+        // Clear history
+        function clearHistory() {
+            fetch('/clear_history')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateHistory([]);
+                }
+            });
+        }
+        
+        // Generate visualization
+        function generateVisualization(plotType) {
+            // Update active button
+            document.querySelectorAll('.viz-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const plotContainer = document.getElementById('plotContainer');
+            plotContainer.innerHTML = '<div class="loading"><div class="spinner"></div><p>Generating visualization...</p></div>';
+            
+            fetch(`/visualization/${plotType}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    plotContainer.innerHTML = `<img src="data:image/png;base64,${data.plot_url}" alt="Model Visualization">`;
+                } else {
+                    plotContainer.innerHTML = `<p style="color: #DC2626;">Error: ${data.error}</p>`;
+                }
+            })
+            .catch(error => {
+                plotContainer.innerHTML = '<p style="color: #DC2626;">Error generating visualization</p>';
+            });
+        }
+        
+        // Refresh application
+        function refreshApp() {
+            // Clear form
+            document.getElementById('predictionForm').reset();
+            
+            // Hide result section
+            document.getElementById('resultSection').classList.remove('show');
+            
+            // Hide error info
+            document.getElementById('errorInfo').style.display = 'none';
+            
+            // Clear prediction history
+            fetch('/refresh')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateHistory([]);
+                    // Show success message briefly
+                    const successMsg = document.createElement('div');
+                    successMsg.style.cssText = 'background: #F0FDF4; color: #065F46; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; text-align: center; border: 1px solid #BBF7D0;';
+                    successMsg.textContent = 'Application refreshed successfully!';
+                    document.querySelector('.input-section').insertBefore(successMsg, document.getElementById('predictionForm'));
+                    
+                    setTimeout(() => {
+                        successMsg.remove();
+                    }, 3000);
+                }
+            });
+        }
+    </script>
+</body>
+</html> 
