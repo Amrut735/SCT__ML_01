@@ -36,17 +36,6 @@ rmse_value = None
 mae_value = None
 training_data = None
 
-# Train model when app is created (for production deployment)
-print("🏠 Training HOUSELYTICS model...")
-try:
-    train_model()
-    print(f"✅ Model trained successfully!")
-    print(f"📊 R² Score: {r2_score_value:.4f}")
-    print(f"📈 RMSE: ₹{rmse_value:,.2f}")
-    print(f"📉 MAE: ₹{mae_value:,.2f}")
-except Exception as e:
-    print(f"❌ Error training model: {e}")
-
 def train_model():
     """Train the house price prediction model."""
     global model, scaler, r2_score_value, rmse_value, mae_value, training_data
@@ -132,6 +121,17 @@ def train_model():
     except Exception as e:
         print(f"❌ Error in train_model: {e}")
         raise e
+
+# Train model when app is created (for production deployment)
+print("🏠 Training HOUSELYTICS model...")
+try:
+    train_model()
+    print(f"✅ Model trained successfully!")
+    print(f"📊 R² Score: {r2_score_value:.4f}")
+    print(f"📈 RMSE: ₹{rmse_value:,.2f}")
+    print(f"📉 MAE: ₹{mae_value:,.2f}")
+except Exception as e:
+    print(f"❌ Error training model: {e}")
 
 def predict_price(square_footage, bedrooms, bathrooms):
     """Predict house price in INR."""
